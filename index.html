@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./images/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container-fluid  " style="height: 100vh;">
+        <div class="content" style="height: 80vh;">
+            <div class="weather ">
+                <h1 class="head text-dark">Weather</h1>
+                <img class="img-fluid baloon-img" src="./images/images-removebg-preview (1).png" alt="no image" style="width: 250px; height: 250px;">
+                <div id="result" class="ms-5 ">
+                   
+
+                </div>
+    
+            </div>
+            <div class="details bg-secondary ">
+                <input id="inputPlace" type="text" class="bg-transparent text-dark" placeholder="Enter place ">
+                <hr class="text-white">
+                <button onclick="getTemparature(inputPlace.value)" id="search" class="bg-light w-50 btn btn-outline-dark mt-auto "><i class="fa-solid fa-magnifying-glass"></i> </button>
+                <hr class="text-white">
+                <h3 class="text-dark">Weather Details</h3>
+                <h6 class="text-light">Country</h6>
+                <div id="country_div">
+
+                </div>
+                <h6 class="text-light">Humidity</h6>
+                <div id="humidity_div">
+
+                </div>
+                <h6 class="text-light">Wind</h6>
+                <div id="wind_div">
+
+                </div>
+                <h6 class="text-light">Pressure</h6>
+                <div id="pressure_div">
+
+                </div>
+
+            </div>
+        </div>
+      
+    </div>
+    
+</body>
+<script>
+    function getTemparature(placeTemperature){
+        if(placeTemperature){
+            fetch("https://api.openweathermap.org/data/2.5/weather?q=kakkanad&appid=8ac5c4d57ba6a4b3dfcf622700447b1e&units=metric", {method : "GET"}).then((apiresponse)=>{
+            console.log(apiresponse);
+            apiresponse.json().then((serverResponse)=>{
+                console.log(serverResponse);
+            const allDetails = serverResponse.main
+            console.log(allDetails);
+            const wind = serverResponse.wind
+            console.log(wind);
+            const country = serverResponse.sys.country
+            console.log(country);
+            result.innerHTML = `
+                     <h1>${allDetails.temp}</h1>
+                    <p>Feel Like : ${allDetails.feels_like}</p>
+                    <h3>${placeTemperature}</h3>
+            `
+            country_div.innerHTML = `
+                <p> ${country}</p>
+            `
+            humidity_div.innerHTML = `
+                <p>${allDetails.humidity}</p>
+ 
+            `
+            wind_div.innerHTML = `
+               <p> ${wind.speed}</p>
+
+            `
+            pressure_div.innerHTML = `
+              <p>${allDetails.pressure}</p>
+
+            `
+
+            })
+        })
+        }else{
+            alert("Please Enter valid place")
+        }
+       
+    }
+
+
+</script>
+</html>
